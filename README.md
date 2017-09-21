@@ -17,4 +17,4 @@ However, there are a few modifications necessary:
 
 If the application cannot find the files, you might need to change `dataDirectory` in `main.cpp`.
 
-![Screenshot](data/screenshot.jpg)
+![Screenshot](data/screenshot.JPG)
