@@ -1,0 +1,42 @@
+#version 430
+
+layout(triangles, fractional_odd_spacing) in;
+
+in vec3 patchPosition[];
+in vec3 patchNormal[];
+in vec2 patchTexCoord[];
+
+patch in vec3 patchTangent;
+patch in vec3 patchBitangent;
+
+out vec3 position;
+out vec3 normal;
+out vec2 texCoord;
+
+out vec3 tangent;
+out vec3 bitangent;
+
+uniform mat4 projection;
+
+uniform sampler2D displacementMap;
+uniform float displacementScale;
+
+uniform bool useDisplacementMap;
+
+void main()
+{
+	vec3 barycentric = gl_TessCoord;
+
+	//do simple barycentric interpolation
+	position    = barycentric.x * patchPosition[0] + barycentric.y * patchPosition[1] + barycentric.z * patchPosition[2];
+	normal      = normalize(barycentric.x * patchNormal[0]   + barycentric.y * patchNormal[1]   + barycentric.z * patchNormal[2]);
+	texCoord    = barycentric.x * patchTexCoord[0] + barycentric.y * patchTexCoord[1] + barycentric.z * patchTexCoord[2];
+
+	tangent = patchTangent;
+	bitangent = patchBitangent;
+
+	if(useDisplacementMap)
+		position += normal * displacementScale * (2 * texture(displacementMap, texCoord).r - 1);
+
+	gl_Position = projection * vec4(position, 1);
+}

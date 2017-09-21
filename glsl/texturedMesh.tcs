@@ -1,0 +1,41 @@
+#version 430
+
+//This is a simple pass-through shader and could be removed
+
+layout(vertices = 3) out;
+
+in vec3 position[];
+in vec3 normal[];
+in vec2 texCoord[];
+
+out vec3 patchPosition[];
+out vec3 patchNormal[];
+out vec2 patchTexCoord[];
+
+patch out vec3 tangent;
+patch out vec3 bitangent;
+
+uniform float tessellationLevel;
+
+void main()
+{
+	patchPosition[gl_InvocationID] = position[gl_InvocationID];
+	patchNormal[gl_InvocationID] = normal[gl_InvocationID];
+	patchTexCoord[gl_InvocationID] = texCoord[gl_InvocationID];	
+
+	//Calculate tangent frame
+	vec2 diffU1 = texCoord[1] - texCoord[0];
+	vec2 diffU2 = texCoord[2] - texCoord[0];
+	vec3 diffP1 = position[1] - position[0];
+	vec3 diffP2 = position[2] - position[0];
+	mat2 m = inverse(mat2(diffU1, diffU2));	
+	mat2x3 TB = mat2x3(diffP1, diffP2) * m;
+	tangent = TB[0];
+	bitangent = TB[1];
+
+	gl_TessLevelOuter[0] = tessellationLevel;  
+	gl_TessLevelOuter[1] = tessellationLevel;  
+	gl_TessLevelOuter[2] = tessellationLevel;  
+	 
+	gl_TessLevelInner[0] = tessellationLevel;  
+}
