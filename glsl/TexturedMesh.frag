@@ -30,7 +30,7 @@ uniform bool useDisplacementMap;
 uniform bool useNormalMap;
 
 uniform float displacementScale;
-const int steps = 32;
+const int steps = 16;
 
 void calculateTangentSpace( vec3 N, vec3 p, vec2 uv, out mat3 tangentSpaceToViewSpace, out mat3 viewSpaceToTangentSpace )
 {
