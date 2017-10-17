@@ -84,7 +84,7 @@ set(GLSL_FILES	simple.vert simple.frag
 				mesh.vert meshInstanced.vert meshIllum.vert
 				normal.vert normal.geom constantColor.frag
 				blinnphong.frag orennayar.frag
-				texturedmesh.vert texturedMesh.frag texturedMesh.tcs texturedMesh.tes)
+				texturedMesh.vert texturedMesh.frag texturedMesh.tcs texturedMesh.tes)
 
 PREPEND(GLSL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/glsl/" ${GLSL_FILES})
 
